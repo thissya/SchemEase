@@ -7,4 +7,4 @@ export const CREATE_OPERATION = "/create"
 export const UPDATE_OPERATION = "/update"
 export const DELETE_OPERATION = "/delete"
 export const READALL_OPERATION = "/"
-
+export const READBY_ID_OPERATION = "/id"

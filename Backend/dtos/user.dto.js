@@ -20,6 +20,36 @@ export const createUserSchema = yup.object({
 
 });
 
+export const getUserByIdSchema = yup.object({
+    id:yup
+    .string()
+    .required("Id is requried")
+    .matches(/^[0-9a-fA-F]{24}$/,"ID must be a valid MongoDB objectId"),
+});
+
+export class CreateUserDTO{
+    constructor(data){
+        Object.assign(this,data);
+    }
+    validate(){
+        return createUserSchema.validate(this,{abortEarly:false});
+    }
+}
+
+export class GetUserByIdDTO{
+    constructor(data){
+        Object.assign(this,data);
+    }
+    validate(){
+        return getUserByIdSchema.validate(this,{abortEarly:false});
+    }
+}
+
+
+
+
+// ------------------------------------------------
+// Not used in APP
 export const updateUserSchema = yup.object({
     userName:yup
     .string()
@@ -44,36 +74,11 @@ export const updateUserSchema = yup.object({
 
 });
 
-export const getUserByIdSchema = yup.object({
-    id:yup
-    .string()
-    .required("Id is requried")
-    .matches(/^[0-9a-fA-F]{24}$/,"ID must be a valid MongoDB objectId"),
-});
-
-export class CreateUserDTO{
-    constructor(data){
-        Object.assign(this,data);
-    }
-    validate(){
-        return createUserSchema.validate(this,{abortEarly:false});
-    }
-}
-
 export class UpdateUserDTO{
     constructor(data){
         Object.assign(this,data);
     }
     validate(){
         return updateUserSchema.validate(this,{abortEarly:false});
-    }
-}
-
-export class GetUserByIdDTO{
-    constructor(data){
-        Object.assign(this,data);
-    }
-    validate(){
-        return getUserByIdSchema.validate(this,{abortEarly:false});
     }
 }
