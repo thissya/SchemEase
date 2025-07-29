@@ -1,5 +1,19 @@
 import yup from 'yup';
 
+export const loginSchema = yup.object({
+    email:yup
+    .string()
+    .required("Email is required")
+    .email("Invalid Email format"),
+
+    password:yup
+    .string()
+    .required("Password is required")
+    .min(6,"Password must be minimum 6 characters")
+    .max(20,"Password should be within 20 characters")
+
+});
+
 export const createUserSchema = yup.object({
     userName: yup
     .string("UserName must be String")
@@ -21,11 +35,21 @@ export const createUserSchema = yup.object({
 });
 
 export const getUserByIdSchema = yup.object({
-    id:yup
+    userId:yup
     .string()
-    .required("Id is requried")
+    .required("userId is requried")
     .matches(/^[0-9a-fA-F]{24}$/,"ID must be a valid MongoDB objectId"),
 });
+
+export class LoginDTO{
+    constructor(data){
+        Object.assign(this,data);
+    }
+
+    validate(){
+        return loginSchema.validate(this,{abortEarly:false});
+    }
+}
 
 export class CreateUserDTO{
     constructor(data){

@@ -1,5 +1,5 @@
 import yup from 'yup'
-import { AREATYPE, CASTE, EDUCATIONALQUALIFICATION, GENDER, MARITALSTATUS, RELIGION, STATE } from '../constants/userDetail.constants.js'
+import { ANNUALINCOME, AREATYPE, CASTE, EDUCATIONALQUALIFICATION, GENDER, MARITALSTATUS, RELIGION, STATE } from '../constants/userDetail.constants.js'
 
 export const createUserDetailSchema = yup.object({
     dateOfBirth:yup
@@ -70,10 +70,14 @@ export const createUserDetailSchema = yup.object({
         .string()
         .oneOf(Object.values(ANNUALINCOME), "Invalid income range")
         .required("Annual income is required"),
-})
+});
 
+export const updateUserDetailByUserIdSchema = yup.object({
+  userId: yup
+    .string()
+    .required("User ID is required")
+    .matches(/^[0-9a-fA-F]{24}$/, "ID must be a valid MongoDB ObjectId"),
 
-export const updateUserDetailSchema = yup.object({
   dateOfBirth: yup
     .date()
     .max(new Date(), "Date of Birth cannot be in the future")
@@ -150,15 +154,11 @@ export const updateUserDetailSchema = yup.object({
     .oneOf(Object.values(ANNUALINCOME), "Invalid Income Range")
     .optional(),
 
-  id: yup
-    .string()
-    .required("User ID is required")
-    .matches(/^[0-9a-fA-F]{24}$/, "ID must be a valid MongoDB ObjectId")
+
 });
 
-
 export const getUserDetailByUserIdSchema = yup.object({
-     id: yup
+    userId: yup
     .string()
     .required("User ID is required")
     .matches(/^[0-9a-fA-F]{24}$/, "ID must be a valid MongoDB ObjectId")
@@ -189,6 +189,6 @@ export class getUserDetailByUserIdDTO{
     }
 
     validate(){
-        return 
+        return getUserDetailByUserIdSchema.validate(this,{abortEarly:false});
     }
 }

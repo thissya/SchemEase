@@ -6,6 +6,15 @@ export async function createUserRepo(data){
     return await newUser.save();
 }
 
+export async function updateUserRepo(userId, userDetailId) {
+    return await UserModel.findByIdAndUpdate(
+        userId,
+        {userDetail:userDetailId,details:true},
+        { new: true }  
+    );
+}
+
+
 //Account Deletion
 export async function deleteUserByIdRepo(id){
     return await UserModel.findByIdAndDelete({_id:id});
@@ -16,6 +25,9 @@ export async function getUserByIdRepo(id){
     // return await UserModel.findOne({_id:id});
 }
 
+export async function getUserByEmailRepo(email){
+    return await UserModel.findOne({email:email});
+}
 
 //testing
 export async function getAllUserRepo(){
@@ -26,9 +38,6 @@ export async function getAllUserRepo(){
 //-----------------------------------------------
 //Not in App use
 
-// export async function getUserByEmailRepo(email){
-//     return await UserModel.findOne({email});
-// }
 
 // //for updating the details like email and password
 // export async function getByIdAndUpdateRepo(id,data){

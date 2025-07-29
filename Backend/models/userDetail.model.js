@@ -16,7 +16,6 @@ const userDetailSchema = new mongoose.Schema({
     userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: SCHEMA_CONST.USER, 
-    required: true,
     unique: true, 
   },
   dateOfBirth: {
@@ -62,6 +61,7 @@ const userDetailSchema = new mongoose.Schema({
   educationalQualification: {
     type: String,
     enum: EDUCATIONALQUALIFICATION,
+    default:EDUCATIONALQUALIFICATION.FIFTH,
     required: true,
   },
   student: {

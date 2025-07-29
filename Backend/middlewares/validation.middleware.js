@@ -2,7 +2,7 @@ import { ValidationError } from "yup";
 
 export const validateDTO  = (schema) => async(req ,res ,next)=>{
     try{
-        await schema.validate(req.body,{abortEarly:false});
+        await schema.validate({...req.body,userId:req.userId},{abortEarly:false});
         next();
     }catch(error){
         console.log(error);

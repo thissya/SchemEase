@@ -1,6 +1,18 @@
-import { CreateUserDTO, GetUserByIdDTO } from "../dtos/user.dto.js";
-import { handleCreateUser, handleDeleteUserById, handleGetAllUser, handleGetUserById } from "../services/user.service.js";
+import { CreateUserDTO, GetUserByIdDTO, LoginDTO } from "../dtos/user.dto.js";
+import { handleCreateUser, handleDeleteUserById, handleGetAllUser, handleGetUserById, handleLogin } from "../services/user.service.js";
 
+
+export async function login(req,res,next){
+    try{
+        const data = new LoginDTO(req.body);
+        console.log(data);
+        
+        const response = await handleLogin(data);
+        return res.status(response.statusCode).json(response);
+    }catch(err){
+        next(err);
+    }
+}
 
 export async function createUser(req,res,next){
     try{
@@ -17,7 +29,7 @@ export async function createUser(req,res,next){
 
 export async function getUserById(req,res,next){
     try{
-        const data = new GetUserByIdDTO(req.body);
+        const data = new GetUserByIdDTO({userId:req.userId});
         console.log(data);
 
         const response = await handleGetUserById(data);

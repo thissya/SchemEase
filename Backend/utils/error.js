@@ -36,13 +36,13 @@ export class NotFoundError extends AppError{
     }
 }
 
-// 400 is for Bad Request || here we using for internal validation before getting into controller!
+// 400 is for Bad Request || here we using for internal validation before getting into controller! 
 export class InternalValidationError extends AppError{
     constructor(errorsOrMessage = "InternalValidationError"){
         if(Array.isArray(errorsOrMessage)){
             this.errors = errorsOrMessage
         }
-        super(400,"Internal Validation Error Occured");
+        super(400,errorsOrMessage);
         this.name = "InternalValidationError";
     }
 }
