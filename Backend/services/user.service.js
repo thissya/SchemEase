@@ -6,30 +6,37 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export async function handleLogin(data){
-    const email = data.email;
-    const password = data.password;
+    try{
+        const email = data.email;
+        const password = data.password;
 
-    const existUser = await getUserByEmailRepo(email);
+        const existUser = await getUserByEmailRepo(email);
 
-    if(!existUser){
-        throw new InternalValidationError("User Not Found!");
+        if(!existUser){
+            throw new InternalValidationError("User Not Found!");
+        }
+
+        const hashedPassword = await bcrypt.compare(password,existUser.password);
+
+        if(!hashedPassword){
+            throw new InternalValidationError("Invalid Credentials : Password doesn't match");
+        }
+
+        const token = jwt.sign({id:existUser._id,role:existUser.role},process.env.JWT_SECRET,{expiresIn:'5h'});
+
+        const response  = new GeneralResponce(
+            true,
+            token,
+            200,
+            "Login Successfull"
+        )
+        return response;
+    }catch(err){
+        if(isAppError(err)){
+            throw err;
+        }
+        throw new AppError(500,"Error in handleLogin service");
     }
-
-    const hashedPassword = await bcrypt.compare(password,existUser.password);
-
-    if(!hashedPassword){
-        throw new InternalValidationError("Invalid Credentials : Password doesn't match");
-    }
-
-    const token = jwt.sign({id:existUser._id,role:existUser.role},process.env.JWT_SECRET,{expiresIn:'5h'});
-
-    const response  = new GeneralResponce(
-        true,
-        token,
-        200,
-        "Login Successfull"
-    )
-    return response;
 }
 
 export async function handleCreateUser(data){
@@ -84,9 +91,9 @@ export async function handleGetUserById(data){
 
 export async function handleDeleteUserById(data){
     try{
-        const id = data.id;
+        const id = data.userId;
         const detailResponse = await deleteUserDetailByUserIdRepo(id);
-        const userResponse = await deleteUserByIdRepo(data.id);
+        const userResponse = await deleteUserByIdRepo(id);
         const response = new GeneralResponce(
             true ,
             userResponse,

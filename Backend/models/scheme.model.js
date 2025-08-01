@@ -28,7 +28,7 @@ const schemeSchema = new mongoose.Schema({
   },
   sectorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: SCHEMA_CONST.SECTOR,
+    ref: SCHEMA_CONST.SECTOR, 
   },
   keywords: {
     type: [String],

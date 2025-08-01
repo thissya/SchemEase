@@ -41,12 +41,11 @@ export async function getUserById(req,res,next){
 
 export async function deleteUserById(req,res,next){
     try{
-        const data = new GetUserByIdDTO(req.body);
+        const data = new GetUserByIdDTO({...req.body,userId:req.userId});
         console.log(data);
 
         const response = await handleDeleteUserById(data);
         return res.status(response.statusCode).json(response);
-
     }catch(err){
         next(err);
     }
